@@ -1,0 +1,149 @@
+{
+    "staff": [
+      {
+        "name": "James",
+        "avatar": "assets/img/man1.jpg",
+        "schedule": [
+          {
+            "day": "Mon",
+            "task": "IRD",
+            "startTime": "6:30",
+            "endTime": "15:30"
+          },
+          {
+            "day": "Tue",
+            "task": "Minibar",
+            "startTime": "9:00",
+            "endTime": "17:00"
+          },
+          {
+            "day": "Wed",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Thu",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Fri",
+            "task": "Banquet",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Sat",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Sun",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          }
+        ]
+      },
+      {
+        "name": "Alice",
+        "avatar": "assets/img/woman2.jpg",
+        "schedule": [
+          {
+            "day": "Mon",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Tue",
+            "task": "IRD",
+            "startTime": "6:30",
+            "endTime": "15:30"
+          },
+          {
+            "day": "Wed",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Thu",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Fri",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Sat",
+            "task": "Minibar",
+            "startTime": "9:00",
+            "endTime": "17:00"
+          },
+          {
+            "day": "Sun",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          }
+        ]
+      },
+      {
+        "name": "Bob",
+        "avatar": "assets/img/man2.jpg",
+        "schedule": [
+          {
+            "day": "Mon",
+            "task": "IRD",
+            "startTime": "6:30",
+            "endTime": "15:30"
+          },
+          {
+            "day": "Tue",
+            "task": "Banquet",
+            "startTime": "17:30",
+            "endTime": "close"
+          },
+          {
+            "day": "Wed",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Thu",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Fri",
+            "task": "Banquet",
+            "startTime": "17:30",
+            "endTime": "23:30"
+          },
+          {
+            "day": "Sat",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          },
+          {
+            "day": "Sun",
+            "task": "off",
+            "startTime": "",
+            "endTime": ""
+          }
+        ]
+      }
+    ]
+  }
+  
