@@ -33,12 +33,12 @@ class StaffSchedulingPage extends StatefulWidget {
   const StaffSchedulingPage({Key? key}) : super(key: key);
 
   @override
-  _StaffSchedulingPageState createState() => _StaffSchedulingPageState();
+  StaffSchedulingPageState createState() => StaffSchedulingPageState();
 }
 
-class _StaffSchedulingPageState extends State<StaffSchedulingPage> {
+class StaffSchedulingPageState extends State<StaffSchedulingPage> {
   List<StaffMember> staffMembers = [];
-
+  List<String> terms = [];
   @override
   void initState() {
     super.initState();
@@ -50,7 +50,10 @@ class _StaffSchedulingPageState extends State<StaffSchedulingPage> {
     final jsonMap = json.decode(jsonString);
 
     List<StaffMember> members = [];
-
+    List<String> scheduleTerms = [];
+    for (String term in jsonMap['terms']) {
+      scheduleTerms.add(term);
+    }
     for (var member in jsonMap['staff']) {
       List<Schedule> schedule = [];
       for (var s in member['schedule']) {
@@ -70,6 +73,7 @@ class _StaffSchedulingPageState extends State<StaffSchedulingPage> {
 
     setState(() {
       staffMembers = members;
+      terms = scheduleTerms;
     });
   }
 
@@ -79,61 +83,131 @@ class _StaffSchedulingPageState extends State<StaffSchedulingPage> {
       appBar: AppBar(
         title: const Text('Staff Scheduling'),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Table(
-                defaultColumnWidth: const FixedColumnWidth(83.0),
+      body: Column(
+        children: [
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  TableRow(
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Card(
+                      shape: const CircleBorder(),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            TextEditingController termTextController =
+                                TextEditingController();
+                            showDialog(
+                              context: context,
+                              builder: (context) => SimpleDialog(
+                                title: const Text('Add Terms'),
+                                contentPadding: EdgeInsets.all(8.0),
+                                children: [
+                                  TextField(
+                                    decoration: const InputDecoration(
+                                        label: Text('term')),
+                                    controller: termTextController,
+                                  ),
+                                  const SizedBox(
+                                    height: 8.0,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (termTextController
+                                              .text.isNotEmpty) {
+                                            terms.add(termTextController.text);
+                                          }
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: const Text('Save')),
+                                ],
+                              ),
+                            );
+                          });
+                        },
+                        icon: const Icon(Icons.add),
+                        color: Colors.green,
+                      )),
+                ],
+              ),
+              const SizedBox(
+                height: 12.0,
+              ),
+              if (terms.isNotEmpty)
+                ...terms
+                    .map<Widget>((e) => Card(
+                          child: ListTile(title: Text(e)),
+                        ))
+                    .toList()
+              else
+                const Text('No terms yet')
+            ],
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Table(
+                    defaultColumnWidth: const FixedColumnWidth(83.0),
                     children: [
-                      const TableCell(
-                        child: SizedBox(),
+                      TableRow(
+                        children: [
+                          const TableCell(
+                            child: SizedBox(),
+                          ),
+                          for (var day in [
+                            'Mon',
+                            'Tue',
+                            'Wed',
+                            'Thu',
+                            'Fri',
+                            'Sat',
+                            'Sun'
+                          ])
+                            TableCell(
+                              child: Center(child: Text(day)),
+                            ),
+                        ],
                       ),
-                      for (var day in [
-                        'Mon',
-                        'Tue',
-                        'Wed',
-                        'Thu',
-                        'Fri',
-                        'Sat',
-                        'Sun'
-                      ])
-                        TableCell(
-                          child: Center(child: Text(day)),
+                      for (var member in staffMembers)
+                        TableRow(
+                          children: [
+                            TableCell(
+                              child: _getAvatarWithName(
+                                name: member.name,
+                                path: member.avatar,
+                              ),
+                            ),
+                            for (var schedule in member.schedule)
+                              TableCell(
+                                child: StaffCell(
+                                  avatar: _getTaskIcon(schedule.task),
+                                  task: schedule.startTime.isEmpty ||
+                                          schedule.endTime.isEmpty
+                                      ? 'off'
+                                      : '${schedule.startTime} - ${schedule.endTime}',
+                                ),
+                              ),
+                          ],
                         ),
                     ],
                   ),
-                  for (var member in staffMembers)
-                    TableRow(
-                      children: [
-                        TableCell(
-                          child: _getAvatarWithName(
-                            name: member.name,
-                            path: member.avatar,
-                          ),
-                        ),
-                        for (var schedule in member.schedule)
-                          TableCell(
-                            child: StaffCell(
-                              avatar: _getTaskIcon(schedule.task),
-                              task: schedule.startTime.isEmpty ||
-                                      schedule.endTime.isEmpty
-                                  ? 'off'
-                                  : '${schedule.startTime} - ${schedule.endTime}',
-                            ),
-                          ),
-                      ],
-                    ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -142,12 +216,12 @@ class _StaffSchedulingPageState extends State<StaffSchedulingPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         CircleAvatar(
           backgroundImage: AssetImage(path),
           radius: 32,
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(name),
       ],
     );
@@ -173,7 +247,7 @@ class _StaffSchedulingPageState extends State<StaffSchedulingPage> {
         height: 40,
       );
     } else {
-      return Icon(Icons.weekend);
+      return const Icon(Icons.weekend);
     }
   }
 }
